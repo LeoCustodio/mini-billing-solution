@@ -66,7 +66,6 @@ module.exports = (app, channel) => {
                 datetime: new Date()
             } 
             PublishMessage(channel,rabbitMQ.bindingKey, JSON.stringify(message));
-            // await service.MakeDeposit(JSON.stringify(message));
             res.sendStatus(200);
         }catch(err){
             throw err;
