@@ -7,15 +7,17 @@ class CustomerService {
     }    
 
     async SubscribeEvents(payload){
+        payload = JSON.parse(payload);
         const {event, data} = payload;
 
         const message = {
             customerName: data.customerName,
-            amount: data.amount
+            amount: data.amount,
+            datetime: new Date(), 
         };
 
         switch(event){
-            case 'MAKE_DEPOIST':
+            case 'MAKE_DEPOSIT':
                 this.MakeDeposit(message);
             case 'CREATE_NEW_CUSTOMER':
                 this.CreateCustomer(data.customerName, 0);
@@ -28,7 +30,11 @@ class CustomerService {
 
     async MakeDeposit(message){
         try{
-            return await this.repository.MakeDeposit(message);
+            const customerResult = await this.repository.GetCustomerByName(message.customerName);
+            const customerBalance = parseFloat(customerResult.balance) + parseFloat(message.amount);
+            customerResult.balance = customerBalance;
+            await this.repository.UpdateCustomerByName(customerResult);
+            return message;
         }catch(err){
             throw err;
         } 

@@ -11,8 +11,10 @@ else{
 
 module.exports = {
     rabbitMQ :{
-        url:'amqp://localhost',
-        exchangeName:'transaction_exchange'
+        url:process.env.RABBITMQ_URL,
+        exchangeName:'transaction_exchange',
+        queueName: 'transaction_queue',
+        bindingKey: 'transaction_service'
     },
     PORT : process.env.PORT,
     DB_URL: process.env.MONGODB_URL,

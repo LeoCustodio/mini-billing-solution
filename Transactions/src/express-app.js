@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const {customers} = require('./api');
-// const book = require('../books/models/book');
+const {transactions} = require('./api');
 
-module.exports = async (app) => {
+module.exports = async (app,channel) => {
     app.use(express.json({limit: 'lmb'}));
     app.use(express.urlencoded({extended: true, limit:'lmb'}));
     // app.cors(cors());
@@ -11,5 +10,5 @@ module.exports = async (app) => {
 
 
     //passing app to apis
-    customers(app);
+    transactions(app,channel);
 }
