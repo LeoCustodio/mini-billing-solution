@@ -1,11 +1,11 @@
 const customersSchema = require('../models/customersModel');
-const Producer = require('../../util/producer');
-const producer = new Producer();
+
 class CustomersRepository {
 
     async MakeDeposit(message){
         try{
-            await producer.publishMessage(message);
+            
+
         }catch(err){
             throw err;
         }
@@ -13,7 +13,7 @@ class CustomersRepository {
 
     async CreateCustomer(name,balance){
         try{
-            var customer = new customersSchema({
+            const customer = new customersSchema({
                 name,
                 balance
                 });
@@ -37,6 +37,16 @@ class CustomersRepository {
         try{
             const customerResult = customersSchema.findOne({'name': name});
             return customerResult;
+        }catch(err){
+            throw err;
+        }
+    }
+
+    async UpdateCustomerByName(customer){
+        try{
+            await customersSchema.updateOne(
+                {"name": customer.name},
+                    {"$set":{"balance": customer.balance}});
         }catch(err){
             throw err;
         }

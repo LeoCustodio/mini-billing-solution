@@ -29,11 +29,15 @@ module.exports.PublishMessage = async (channel, binding_key, message) => {
 
 //subscribe message
 module.exports.SubscribeMessage = async (channel, service) => {
+    console.log();
     const appQueue = await channel.assertQueue(config.rabbitMQ.queueName);
-    channel.bindQueue(appQueue.queue, config.rabbitMQ.exchangeName, binding_key);
+
+    channel.bindQueue(appQueue.queue, config.rabbitMQ.exchangeName, config.rabbitMQ.bindingKey);
+
     channel.consume(appQueue.queue,data => {
         console.log('received data');
         console.log(data.content.toString());
+        service.SubscribeEvents(data.content.toString());
         channel.ack(data);
     })
 }
