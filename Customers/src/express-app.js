@@ -1,15 +1,16 @@
 const express = require('express');
 const cors = require('cors');
-const {customers} = require('./api');
-// const book = require('../books/models/book');
+const {customers, auth} = require('./api');
 
 module.exports = async (app, channel) => {
     app.use(express.json({limit: 'lmb'}));
     app.use(express.urlencoded({extended: true, limit:'lmb'}));
-    // app.cors(cors());
+    // app.cors();
     app.use(express.static(__dirname + '/public'));
 
 
     //passing app to apis
     customers(app,channel);
+    auth(app);
+
 }

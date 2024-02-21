@@ -1,7 +1,7 @@
 const { Int32, Decimal128 } = require('mongodb')
-let mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
-let customersSchema = new mongoose.Schema({
+const customersSchema = new mongoose.Schema({
     name:{
         type: String,
         require: true

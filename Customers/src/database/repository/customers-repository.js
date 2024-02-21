@@ -1,15 +1,7 @@
 const customersSchema = require('../models/customersModel');
-
+const config = require('../../config');
+const axios = require('axios');
 class CustomersRepository {
-
-    async MakeDeposit(message){
-        try{
-            
-
-        }catch(err){
-            throw err;
-        }
-    }
 
     async CreateCustomer(name,balance){
         try{

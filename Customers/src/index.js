@@ -7,7 +7,6 @@ const {CreateChannel} = require('./util');
 const StartApp = async() => {
     const app = express();
     await new dbConnection();
-
     const channel = await CreateChannel();
 
     await expressApp(app, channel);
