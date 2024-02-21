@@ -6,9 +6,9 @@ const config = require('../config');
 //create channel
 module.exports.CreateChannel = async () => {
     try{
-        const connection = await ampqlib.connect(config.rabbitMQ.url);
+        const connection = await ampqlib.connect(config.rabbitMQ.rabbitMQ_url);
         const channel = await connection.createChannel();
-        await channel.assertExchange(config.rabbitMQ.exchangeName,'direct', false);
+        await channel.assertExchange(config.rabbitMQ.tranexchangename,'direct', false);
         return channel;
     }catch(err){
         throw err;
@@ -16,10 +16,9 @@ module.exports.CreateChannel = async () => {
 }
 
 //publish message
-
 module.exports.PublishMessage = async (channel, binding_key, message) => {
     try{
-        await channel.publish(config.rabbitMQ.exchangeName,binding_key, Buffer.from(message));
+        await channel.publish(config.rabbitMQ.tranexchangename, binding_key, Buffer.from(message));
         console.log('Message has been sent');
     }catch(err){
         throw err;  
@@ -29,8 +28,8 @@ module.exports.PublishMessage = async (channel, binding_key, message) => {
 
 //subscribe message
 module.exports.SubscribeMessage = async (channel, service) => {
-    const appQueue = await channel.assertQueue(config.rabbitMQ.queueName);
-    channel.bindQueue(appQueue.queue, config.rabbitMQ.exchangeName, binding_key);
+    const appQueue = await channel.assertQueue(config.rabbitMQ.tranqueue);
+    channel.bindQueue(appQueue.queue, config.rabbitMQ.tranexchangename, binding_key);
     channel.consume(appQueue.queue,data => {
         console.log('received data');
         console.log(data.content.toString());

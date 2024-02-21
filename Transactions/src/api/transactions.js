@@ -13,12 +13,13 @@ module.exports = (app,channel) => {
     })
 
     //Make Deposit
-    app.get("/transaction/makedeposit", async (req,res) => {
+    app.get("/transaction/GetTransactionsByName", async (req,res) => {
         try{
-            const {name,amount,} = req.body;
-            const customer = await service.GetCustomerByName(name);
-            if(customer){
-                res.json(customer.name);
+            const {customerName} = req.body;
+            console.log(customerName);
+            const transactionResult = await service.GetTransactionsByName(customerName);
+            if(transactionResult){
+                res.json(transactionResult);
             }
             else{
                 res.sendStatus(404);

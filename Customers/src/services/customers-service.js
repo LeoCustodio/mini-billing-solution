@@ -1,38 +1,71 @@
 const { CustomersRepository } = require('../database');
-
+const axios = require('axios');
+const {rabbitMQ} = require('../config');
+const {PublishMessage} = require('../util');
 //Business logic
 class CustomerService {
     constructor(){
         this.repository = new CustomersRepository();
     }    
+    
+    async CreateTransactionAndReceipt(channel, message, paymentType){
+        try{
+            const transaction = {
+                customerName: message.customerName,
+                amount: message.amount,
+                datetime: new Date(),
+                event: message.event
+            };
+            const receipt = {
+                content: `Receipt has been generated - Customer Name: ${message.customerName} - Amount: -${message.amount} - Create Date ${new Date()}`,
+                customerName: message.customerName,
+                datetime: new Date(),
+                event: message.event
+            };
 
-    async SubscribeEvents(payload){
-        payload = JSON.parse(payload);
-        const {event, data} = payload;
-
-        const message = {
-            customerName: data.customerName,
-            amount: data.amount,
-            datetime: new Date(), 
-        };
-
-        switch(event){
-            case 'MAKE_DEPOSIT':
-                this.MakeDeposit(message);
-            case 'CREATE_NEW_CUSTOMER':
-                this.CreateCustomer(data.customerName, 0);
-            default:
-                break;
+            await PublishMessage(channel, rabbitMQ.tranbindingKey, JSON.stringify(transaction));
+            await PublishMessage(channel, rabbitMQ.recbindingkey, JSON.stringify(receipt));
+            return await this.MakePayment(message, paymentType);
+        }catch(err){
+            throw err;
         }
 
+    }
+    
+    async GetCustomerTransactions(customerName){
+        const options = {
+            method: 'GET',
+            url: `http://localhost:8001/transaction/GetTransactionsByName`,
+            params: { 'api-version': '3.0' },
+            headers: {
+                'content-type': 'application/json'
+            },
+            data:
+                {
+                    customerName: customerName,
+                },
+        };
 
+        const res = await axios.request(options).then(function(response){
+            console.log(response.data);
+            return response.data;
+        }).catch(function (err){
+            console.log(err);
+        })
+        return res;
     }
 
-    async MakeDeposit(message){
+    async MakePayment(message, paymentType){
         try{
             const customerResult = await this.repository.GetCustomerByName(message.customerName);
-            const customerBalance = parseFloat(customerResult.balance) + parseFloat(message.amount);
-            customerResult.balance = customerBalance;
+            if(paymentType === "deposit"){      
+                console.log(paymentType);          
+                const customerBalance = parseFloat(customerResult.balance) + parseFloat(message.amount);
+                customerResult.balance = customerBalance;
+            }else if(paymentType === "payment"){
+                const customerBalance = parseFloat(customerResult.balance) - parseFloat(message.amount);
+                customerResult.balance = customerBalance;
+            }
             await this.repository.UpdateCustomerByName(customerResult);
             return message;
         }catch(err){

@@ -2,7 +2,7 @@ const TransactionSchema = require('../models/transactionsModel');
 
 class TransactionRepository {
 
-    async MakeDeposit(message){
+    async CreateTransaction(message){
         try{
             console.log(message);
             var transaction = new TransactionSchema({
@@ -16,6 +16,10 @@ class TransactionRepository {
             throw err;
         }
 
+    }
+    async GetTransactionsByName(customerName){
+        const transactionResult = TransactionSchema.find({"customerName":customerName});
+        return transactionResult;
     }
 }
 

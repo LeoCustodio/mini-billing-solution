@@ -19,7 +19,7 @@ module.exports.CreateChannel = async () => {
 
 module.exports.PublishMessage = async (channel, binding_key, message) => {
     try{
-        await channel.publish(config.rabbitMQ.exchangeName,binding_key, Buffer.from(message));
+        await channel.publish(config.rabbitMQ.exchangeName, binding_key, Buffer.from(message));
         console.log('Message has been sent');
     }catch(err){
         throw err;  

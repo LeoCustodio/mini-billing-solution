@@ -1,7 +1,5 @@
 const CustomersService = require('../services/customers-service');
-// const userAuth = require('./middlewares/auth');
-const {rabbitMQ} = require('../config');
-const {PublishMessage} = require('../util');
+const verifyToken = require('../middleware/authMiddleware');
 
 module.exports = (app, channel) => {
     const service = new CustomersService();
@@ -11,18 +9,22 @@ module.exports = (app, channel) => {
     })
 
     //Make Deposit
-    app.post("/customer/makedeposit", async (req,res) => {
-        try{            
-            const message = {
-                customerName: req.body.customerName,
-                amount: req.body.amount,
-                datetime: new Date(),
-                event:req.body.event
-            }; 
-            console.log(JSON.stringify(message));
-            await PublishMessage(channel,rabbitMQ.bindingKey, JSON.stringify(message));
-            await service.MakeDeposit(message);
-            res.sendStatus(200);
+    app.post("/customer/makedeposit", verifyToken ,async (req,res) => {
+        try{           
+            const paymentType = "deposit"; 
+            const transactionResult = await service.CreateTransactionAndReceipt(channel,req.body,paymentType);
+            res.status(200).json(transactionResult);
+        }catch(err){
+            throw err;
+        }
+    })
+
+    //Make Payment
+    app.post("/customer/makepayment", verifyToken ,async (req,res) => {
+        try{
+            const paymentType = "payment";
+            const transactionResult = await service.CreateTransactionAndReceipt(channel,req.body,paymentType);
+            res.status(200).json(transactionResult);
         }catch(err){
             throw err;
         }
@@ -30,7 +32,7 @@ module.exports = (app, channel) => {
     })
 
     //Get all Customers
-    app.get("customer/searchcustomers", async (req,res) => {
+    app.get("/customer/searchcustomers", verifyToken, async (req,res) => {
         try{
             const constumers = await service.GetCustomers();
             if(constumers){
@@ -46,7 +48,7 @@ module.exports = (app, channel) => {
 
 
     //Create Customer
-    app.post('/customer/create', async (req, res, next) => {
+    app.post("/customer/create", verifyToken, async (req, res, next) => {
         try{
             const {name} = req.body;
             const data = await service.CreateCustomer(name,0);
@@ -57,7 +59,7 @@ module.exports = (app, channel) => {
     })
 
     //Get Customer by Name
-    app.get("customer/searchcustomer/name", async (req,res) => {
+    app.get("/customer/searchcustomer/name", verifyToken, async (req,res) => {
         try{
             const {name} = req.body;
             const customer = await service.GetCustomerByName(name);
@@ -70,8 +72,19 @@ module.exports = (app, channel) => {
         }catch(err){
             throw err;
         }
-
     })
+
+    //Get all Customers Transactions
+    app.get("/customer/gettransactions", verifyToken, async (req,res) => {
+        try{
+            const transactionResult = await service.GetCustomerTransactions(req.body.customerName);
+            res.status(200).json(transactionResult);
+        }catch(err){
+            throw err;
+        }
+        
+    })
+    
 }
 
 
