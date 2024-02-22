@@ -1,5 +1,7 @@
 const ampqlib = require('amqplib');
 const config = require('../config');
+const jwt = require('jsonwebtoken');
+const {APP_SECRET} = require('../config');
 
 /* =========================== Message Broker ===========================*/
 
@@ -36,4 +38,24 @@ module.exports.SubscribeMessage = async (channel, service) => {
         service.SubscribeEvents(data.content.toString())
         channel.ack(data);
     })
+}
+
+/* =========================== Token Receipt ===========================*/
+
+module.exports.VerifyTokenReceipt = (token) => {
+    try{
+        const decoded = jwt.verify(token, APP_SECRET);
+
+        return true;
+    }catch(err){
+        return false;
+    }
+
+};
+
+module.exports.CreateTokenReceipt = () =>{
+    const token = jwt.sign({}, APP_SECRET, {
+        expiresIn: '2m',
+        });
+    return token;
 }

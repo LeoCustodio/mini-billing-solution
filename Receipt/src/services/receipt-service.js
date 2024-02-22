@@ -9,12 +9,12 @@ class ReceiptService {
 
     async SubscribeEvents(payload){
         payload = JSON.parse(payload);
-        const {event, data} = payload;
-        console.log('payload.customerName',payload.customerName);
+        const {event, content, customerName, token } = payload;
         const message = {
-            content: payload.content,
+            content: content,
             datetime: new Date(),
-            customerName: payload.customerName,
+            customerName: customerName,
+            token: token
         };
         switch(event){
             case 'MAKE_TRANSACTION':
@@ -33,9 +33,9 @@ class ReceiptService {
         }
     }
 
-    async GetReceiptById(id){
+    async GetReceiptById(customerName){
         try{
-            return await this.repository.GetReceiptById(id);
+            return await this.repository.GetReceiptById(customerName);
         }catch(err){
             throw err;
         }

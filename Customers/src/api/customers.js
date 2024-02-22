@@ -1,5 +1,5 @@
 const CustomersService = require('../services/customers-service');
-const verifyToken = require('../middleware/authMiddleware');
+const {verifyToken} = require('../middleware/authMiddleware');
 
 module.exports = (app, channel) => {
     const service = new CustomersService();

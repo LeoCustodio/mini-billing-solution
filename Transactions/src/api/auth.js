@@ -2,7 +2,6 @@ const User = require('../database/models/usersModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {APP_SECRET} = require('../config');
-
 module.exports = (app) => {
 
     // User registration
@@ -16,9 +15,9 @@ module.exports = (app) => {
 
             await user.save();
 
-            res.status(201).json({ message: `User registered successfully` });
-        } catch (err) {
-            res.status(500).json({ error: `'Registration failed' - ${err}` });
+            res.status(201).json({ message: 'User registered successfully' });
+        } catch (error) {
+            res.status(500).json({ error: 'Registration failed' });
         }});
         
     // User login
@@ -42,7 +41,7 @@ module.exports = (app) => {
             expiresIn: '1h',
             });
             res.status(200).json({ token });
-        } catch (err) {
-        res.status(500).json({ err: 'Login failed' });
+        } catch (error) {
+        res.status(500).json({ error: 'Login failed' });
         }});
 }

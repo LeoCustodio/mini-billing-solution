@@ -19,8 +19,9 @@ module.exports = {
         recqueuename: 'receipt_queue',
         recbindingkey: 'receipt_service',
     },
-    PORT : process.env.PORT,
+    PORT: process.env.PORT,
     DB_URL: process.env.MONGODB_URL,
     APP_SECRET: process.env.APP_SECRET,
-    TRANSACTIONSERVICEURL : process.env.TRANSACTIONSERVICEURL,
+    TRANSACTIONSERVICEURL: process.env.TRANSACTIONSERVICEURL,
+    RECEIPTSERVICEURL: process.env.RECEIPTSERVICEURL
 }
