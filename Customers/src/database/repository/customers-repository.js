@@ -1,14 +1,10 @@
 const customersSchema = require('../models/customersModel');
-const config = require('../../config');
-const axios = require('axios');
+
 class CustomersRepository {
 
     async CreateCustomer(name,balance){
         try{
-            const customer = new customersSchema({
-                name,
-                balance
-                });
+            const customer = new customersSchema({ name, balance });
             const customerResult = customer.save();
             return customerResult;
         }catch(err){

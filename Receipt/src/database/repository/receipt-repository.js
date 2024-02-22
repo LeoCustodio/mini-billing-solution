@@ -1,13 +1,14 @@
-const receiptModel = require('../models/receiptModel');
+const receiptSchema = require('../models/receiptModel');
 
 class ReceiptRepository {
 
     async CreateReceipt(message){
         try{
-            const receipt = new receiptModel({
+            const receipt = new receiptSchema({
                 content: message.content,
                 datetime: new Date(),
-                customerName: message.customerName
+                customerName: message.customerName,
+                token: message.token
                 });
             const receiptResult = receipt.save();
             return receiptResult;
@@ -15,10 +16,11 @@ class ReceiptRepository {
             throw err;
         }
     }
-    async GetReceiptById(id){
+    async GetReceiptById(customerName){
         try{
-            const receiptResult = receiptModel.findOne({"_id":id});
-            return receiptResult;
+            const receipts = receiptSchema.find({"customerName":customerName});
+
+            return receipts;
         }catch(err){
             throw err;
         }

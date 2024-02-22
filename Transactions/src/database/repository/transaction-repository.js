@@ -18,8 +18,10 @@ class TransactionRepository {
 
     }
     async GetTransactionsByName(customerName){
-        const transactionResult = TransactionSchema.find({"customerName":customerName});
-        return transactionResult;
+
+        const transactions =  TransactionSchema.find({ "customerName": customerName });
+
+        return transactions;
     }
 }
 

@@ -1,7 +1,6 @@
-const { Int32, Decimal128, ObjectId } = require('mongodb')
-let mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-let receiptSchema = new mongoose.Schema({
+const receiptSchema = new mongoose.Schema({
     content:{
         type: String,
         require:true
@@ -11,6 +10,10 @@ let receiptSchema = new mongoose.Schema({
         require: true
     },
     customerName:{
+        type: String,
+        require: true
+    },
+    token:{
         type: String,
         require: true
     }

@@ -1,7 +1,8 @@
 const { CustomersRepository } = require('../database');
-const axios = require('axios');
-const {rabbitMQ} = require('../config');
-const {PublishMessage} = require('../util');
+const { PublishMessage, VerifyTokenReceipt, CreateTokenReceipt } = require('../util');
+const { MakeAxiosRequest } = require('../util/axios');
+const { rabbitMQ, RECEIPTSERVICEURL, TRANSACTIONSERVICEURL } = require('../config');
+
 //Business logic
 class CustomerService {
     constructor(){
@@ -10,22 +11,31 @@ class CustomerService {
     
     async CreateTransactionAndReceipt(channel, message, paymentType){
         try{
+            const token = CreateTokenReceipt();
+            
+            const customerResult = await this.CustomerBalance(message, paymentType);
+
             const transaction = {
                 customerName: message.customerName,
                 amount: message.amount,
                 datetime: new Date(),
                 event: message.event
             };
+
             const receipt = {
-                content: `Receipt has been generated - Customer Name: ${message.customerName} - Amount: -${message.amount} - Create Date ${new Date()}`,
+                content: `Receipt has been generated - Customer Name: ${message.customerName} - Amount: ${message.amount} - Balance ${customerResult.balance} - Create Date ${new Date()}`,
                 customerName: message.customerName,
                 datetime: new Date(),
-                event: message.event
+                event: message.event,
+                token: token
             };
 
+            //send tranasction message
             await PublishMessage(channel, rabbitMQ.tranbindingKey, JSON.stringify(transaction));
+            //send receipt message
             await PublishMessage(channel, rabbitMQ.recbindingkey, JSON.stringify(receipt));
-            return await this.MakePayment(message, paymentType);
+
+            return await this.MakePayment(customerResult);
         }catch(err){
             throw err;
         }
@@ -33,44 +43,73 @@ class CustomerService {
     }
     
     async GetCustomerTransactions(customerName){
-        const options = {
-            method: 'GET',
-            url: `http://localhost:8001/transaction/GetTransactionsByName`,
-            params: { 'api-version': '3.0' },
-            headers: {
-                'content-type': 'application/json'
-            },
-            data:
-                {
-                    customerName: customerName,
-                },
+        const transactions = await this.GetTransactionsByName(customerName);
+
+        const receipts = await this.GetReceiptByName(customerName);
+        
+        //Test receipt token
+        if(receipts){
+
+            receipts.forEach(receipt => {
+
+                if(!VerifyTokenReceipt(receipt.token)){
+                    console.log(receipt.token);
+                    receipt.token = false;
+                }
+
+            });
+        }
+
+        const returnTransaction = {
+            transactions: transactions,
+            receipts: receipts
         };
 
-        const res = await axios.request(options).then(function(response){
-            console.log(response.data);
-            return response.data;
-        }).catch(function (err){
-            console.log(err);
-        })
+        return returnTransaction;
+    }
+
+    async GetReceiptByName(customerName){
+        const data = {
+            customerName: customerName
+        }
+        const url = `${RECEIPTSERVICEURL}/receipt/GetReceiptById`;
+        const res  = MakeAxiosRequest(url,data);
         return res;
     }
 
-    async MakePayment(message, paymentType){
+    async GetTransactionsByName(customerName){
+        const data = {
+            customerName: customerName
+        }
+        const url = `${TRANSACTIONSERVICEURL}/transaction/GetTransactionsByName`;
+        const res  = MakeAxiosRequest(url,data);
+        return res;
+    }
+
+    async MakePayment(data){
         try{
-            const customerResult = await this.repository.GetCustomerByName(message.customerName);
-            if(paymentType === "deposit"){      
-                console.log(paymentType);          
-                const customerBalance = parseFloat(customerResult.balance) + parseFloat(message.amount);
-                customerResult.balance = customerBalance;
-            }else if(paymentType === "payment"){
-                const customerBalance = parseFloat(customerResult.balance) - parseFloat(message.amount);
-                customerResult.balance = customerBalance;
-            }
-            await this.repository.UpdateCustomerByName(customerResult);
-            return message;
+            await this.repository.UpdateCustomerByName(data);
+
+            return data;
         }catch(err){
             throw err;
         } 
+    }
+
+    async CustomerBalance(message, paymentType){
+        let customerResult = await this.repository.GetCustomerByName(message.customerName);
+
+        if(paymentType === "deposit"){      
+            const customerBalance = parseFloat(customerResult.balance) + parseFloat(message.amount);
+
+            customerResult.balance = customerBalance;
+
+        }else if(paymentType === "payment"){
+            const customerBalance = parseFloat(customerResult.balance) - parseFloat(message.amount);
+
+            customerResult.balance = customerBalance;
+        }
+        return customerResult;
     }
 
     async CreateCustomer(name,balance){
@@ -84,9 +123,7 @@ class CustomerService {
 
     async GetCustomers(){
         try{
-            const costumer = await this.repository.GetCustomers();
-            console.log(costumer);
-            return costumer;
+            return await this.repository.GetCustomers();
         }catch(err){
             console.log(err);
             throw err;

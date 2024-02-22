@@ -1,6 +1,7 @@
 const ReceiptService = require('../services/receipt-service');
 // const userAuth = require('./middlewares/auth');
 const {SubscribeMessage} = require('../util');
+const verifyToken = require('../middleware/authMiddleware');
 
 
 module.exports = (app,channel) => {
@@ -15,9 +16,8 @@ module.exports = (app,channel) => {
     //Make Deposit
     app.get("/receipt/GetReceiptById", async (req,res) => {
         try{
-            const {id} = req.body;
-            console.log(customerName);
-            const receiptResult = await service.GetReceiptById(id);
+            const {customerName} = req.body;
+            const receiptResult = await service.GetReceiptById(customerName);
             if(receiptResult){
                 res.status(200).json(receiptResult);
             }

@@ -1,6 +1,5 @@
 const TransactionService = require('../services/transaction-service');
-// const userAuth = require('./middlewares/auth');
-const {SubscribeMessage} = require('../util');
+const { SubscribeMessage } = require('../util');
 
 
 module.exports = (app,channel) => {
@@ -15,8 +14,8 @@ module.exports = (app,channel) => {
     //Make Deposit
     app.get("/transaction/GetTransactionsByName", async (req,res) => {
         try{
-            const {customerName} = req.body;
-            console.log(customerName);
+            const { customerName} = req.body;
+            console.log( customerName );
             const transactionResult = await service.GetTransactionsByName(customerName);
             if(transactionResult){
                 res.json(transactionResult);
