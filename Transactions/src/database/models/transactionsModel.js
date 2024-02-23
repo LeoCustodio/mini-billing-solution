@@ -7,12 +7,16 @@ let transactionSchema = new mongoose.Schema({
         require: true
     },
     amount:{
-        type:Decimal128,
-        require:true
+        type: Decimal128,
+        require: true
     },
     datetime:{
-        type:Date,
-        require:true
+        type: Date,
+        require: true
+    },
+    transactionId:{
+        type: String,
+        require: true
     }
 })
 

@@ -14,10 +14,27 @@ module.exports = (app,channel) => {
     })
 
     //Make Deposit
-    app.get("/receipt/GetReceiptById", async (req,res) => {
+    app.get("/receipt/GetReceiptById/:customerName", async (req,res) => {
         try{
-            const {customerName} = req.body;
+            const customerName = req.params.customerName;
             const receiptResult = await service.GetReceiptById(customerName);
+            if(receiptResult){
+                res.status(200).json(receiptResult);
+            }
+            else{
+                res.status(404);
+            }
+        }catch(err){
+            throw err;
+        }
+
+    })
+
+    //Make Deposit
+    app.get("/receipt/GetReceiptByTransactionId/:id", async (req,res) => {
+        try{
+            const id = req.params.id;
+            const receiptResult = await service.GetReceiptByTransactionId(id);
             if(receiptResult){
                 res.status(200).json(receiptResult);
             }

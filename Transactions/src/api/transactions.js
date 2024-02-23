@@ -11,11 +11,10 @@ module.exports = (app,channel) => {
         res.send("Index Endpoint.");
     })
 
-    //Make Deposit
-    app.get("/transaction/GetTransactionsByName", async (req,res) => {
+    //Get Transction by customerName
+    app.get("/transaction/GetTransactionsByName/:customerName", async (req,res) => {
         try{
-            const { customerName} = req.body;
-            console.log( customerName );
+            const customerName = req.params.customerName;
             const transactionResult = await service.GetTransactionsByName(customerName);
             if(transactionResult){
                 res.json(transactionResult);

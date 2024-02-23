@@ -75,9 +75,10 @@ module.exports = (app, channel) => {
     })
 
     //Get all Customers Transactions
-    app.get("/customer/gettransactions", verifyToken, async (req,res) => {
+    app.get("/customer/gettransactions/:customerName", verifyToken, async (req,res) => {
         try{
-            const transactionResult = await service.GetCustomerTransactions(req.body.customerName);
+            const customerName = req.params.customerName;
+            const transactionResult = await service.GetCustomerTransactions(customerName);
             res.status(200).json(transactionResult);
         }catch(err){
             throw err;

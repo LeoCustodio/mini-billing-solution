@@ -8,11 +8,13 @@ class TransactionService {
 
     async SubscribeEvents(payload){
         payload = JSON.parse(payload);
-        const {event, data} = payload;
+        console.log(payload);
+        const {event, customerName, amount, transactionId} = payload;
         const message = {
-            customerName: payload.customerName,
-            amount: payload.amount,
+            customerName: customerName,
+            amount: amount,
             datetime: new Date(),
+            transactionId: transactionId
         };
         switch(event){
             case 'MAKE_TRANSACTION':
