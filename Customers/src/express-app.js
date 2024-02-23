@@ -5,7 +5,7 @@ const {customers, auth} = require('./api');
 module.exports = async (app, channel) => {
     app.use(express.json({limit: 'lmb'}));
     app.use(express.urlencoded({extended: true, limit:'lmb'}));
-    // app.cors();
+    app.use(cors());
     app.use(express.static(__dirname + '/public'));
 
 

@@ -16,6 +16,10 @@ const receiptSchema = new mongoose.Schema({
     token:{
         type: String,
         require: true
+    },
+    transactionId:{
+        type: String,
+        require: true
     }
 })
 

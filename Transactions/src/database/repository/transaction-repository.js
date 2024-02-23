@@ -8,7 +8,8 @@ class TransactionRepository {
             var transaction = new TransactionSchema({
                 customerName:message.customerName,
                 amount:message.amount,
-                datetime: message.datetime
+                datetime: message.datetime,
+                transactionId: message.transactionId
             });
             const transactionResult = transaction.save();
             return transactionResult;

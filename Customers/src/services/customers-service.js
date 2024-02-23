@@ -11,6 +11,10 @@ class CustomerService {
     
     async CreateTransactionAndReceipt(channel, message, paymentType){
         try{
+            const crypto = require("crypto");
+
+            const id = crypto.randomBytes(16).toString("hex");
+
             const token = CreateTokenReceipt();
             
             const customerResult = await this.CustomerBalance(message, paymentType);
@@ -19,7 +23,8 @@ class CustomerService {
                 customerName: message.customerName,
                 amount: message.amount,
                 datetime: new Date(),
-                event: message.event
+                event: message.event,
+                transactionId: id
             };
 
             const receipt = {
@@ -27,7 +32,8 @@ class CustomerService {
                 customerName: message.customerName,
                 datetime: new Date(),
                 event: message.event,
-                token: token
+                token: token,
+                transactionId: id
             };
 
             //send tranasction message
@@ -46,6 +52,8 @@ class CustomerService {
         const transactions = await this.GetTransactionsByName(customerName);
 
         const receipts = await this.GetReceiptByName(customerName);
+
+        const customer = await this.GetCustomerByName(customerName);
         
         //Test receipt token
         if(receipts){
@@ -53,7 +61,6 @@ class CustomerService {
             receipts.forEach(receipt => {
 
                 if(!VerifyTokenReceipt(receipt.token)){
-                    console.log(receipt.token);
                     receipt.token = false;
                 }
 
@@ -61,6 +68,7 @@ class CustomerService {
         }
 
         const returnTransaction = {
+            balance: customer ? customer.balance : '',
             transactions: transactions,
             receipts: receipts
         };
@@ -72,7 +80,7 @@ class CustomerService {
         const data = {
             customerName: customerName
         }
-        const url = `${RECEIPTSERVICEURL}/receipt/GetReceiptById`;
+        const url = `${RECEIPTSERVICEURL}/receipt/GetReceiptById/${customerName}`;
         const res  = MakeAxiosRequest(url,data);
         return res;
     }
@@ -81,7 +89,7 @@ class CustomerService {
         const data = {
             customerName: customerName
         }
-        const url = `${TRANSACTIONSERVICEURL}/transaction/GetTransactionsByName`;
+        const url = `${TRANSACTIONSERVICEURL}/transaction/GetTransactionsByName/${customerName}`;
         const res  = MakeAxiosRequest(url,data);
         return res;
     }

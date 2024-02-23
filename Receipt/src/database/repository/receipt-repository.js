@@ -8,7 +8,8 @@ class ReceiptRepository {
                 content: message.content,
                 datetime: new Date(),
                 customerName: message.customerName,
-                token: message.token
+                token: message.token,
+                transactionId: message.transactionId
                 });
             const receiptResult = receipt.save();
             return receiptResult;
@@ -25,6 +26,17 @@ class ReceiptRepository {
             throw err;
         }
     }
+
+    async GetReceipGetReceiptByTransactionIdtById(id){
+        try{
+            const receipts = receiptSchema.find({"transactionId":id});
+
+            return receipts;
+        }catch(err){
+            throw err;
+        }
+    }
+    GetReceipGetReceiptByTransactionIdtById
 }
 
 module.exports = ReceiptRepository;
