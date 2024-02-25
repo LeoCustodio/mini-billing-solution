@@ -1,17 +1,17 @@
-#**Mini-Billing-Solution**
+# **Mini-Billing-Solution**
     ##A simple aplication composed for 3 microservices (Customers, Transactions, Receipt) in NodeJs using Message Broker RabbitMQ and MongoDB as Database.
 
 
-##**Features**
+## **Features**
     #Interface: Easily create, search and delete Customers and Transactions.
     #Athentification: JsonWebToken Athentification created by login method.
 ##Learning Project
 Please note that as a learning project, the code here may not follow best practices at all times as it's a process of learning and improving.
 
 
-##**Usage**
+## **Usage**
 
-##To deploy the Mini-Billing-Solution, follow these steps:
+## To deploy the Mini-Billing-Solution, follow these steps:
 
     #-**Customers:**
 
@@ -38,7 +38,7 @@ Please note that as a learning project, the code here may not follow best practi
         3. Build the application: npm run build
         4. gcloud app deploy app.yaml
 
-##The application can be accessed using the following URLs:
+## The application can be accessed using the following URLs:
         
         Customers MicroService: https://mini-billing-customersapi.rj.r.appspot.com/
         Transactions MicroService: https://mini-billing-transactionsapi.rj.r.appspot.com/
