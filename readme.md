@@ -1,11 +1,11 @@
 # **Mini-Billing-Solution**
-    A simple aplication composed for 3 microservices (Customers, Transactions, Receipt).
+    A simple application composed for 3 microservices (Customers, Transactions, Receipt).
     NodeJs,RabbitMQ, MongoDB, ReactJs
 
 
 ## **Features**
     Interface: Easily create, search and delete Customers and Transactions.
-    Athentification: JsonWebToken Athentification created by login method.
+    Authentication: JsonWebToken Athentification created by login method.
 ## Learning Project
 Please note that as a learning project, the code here may not follow best practices at all times as it's a process of learning and improving.
 
