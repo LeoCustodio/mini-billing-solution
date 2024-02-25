@@ -1,5 +1,6 @@
 # **Mini-Billing-Solution**
-    A simple aplication composed for 3 microservices (Customers, Transactions, Receipt) in NodeJs using Message Broker RabbitMQ and MongoDB as Database.
+    A simple aplication composed for 3 microservices (Customers, Transactions, Receipt).
+    NodeJs,RabbitMQ, MongoDB, ReactJs
 
 
 ## **Features**
