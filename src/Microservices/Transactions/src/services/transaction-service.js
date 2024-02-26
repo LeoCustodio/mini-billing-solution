@@ -16,6 +16,7 @@ class TransactionService {
             datetime: new Date(),
             transactionId: transactionId
         };
+        console.log(event);
         switch(event){
             case 'MAKE_TRANSACTION':
                 this.CreateTransaction(message);
@@ -26,7 +27,7 @@ class TransactionService {
 
     async CreateTransaction(message){
         try{
-            console.log(message);
+            console.log('messagemessagemessage',message);
             await this.repository.CreateTransaction(message);
         }catch(err){
             throw err;

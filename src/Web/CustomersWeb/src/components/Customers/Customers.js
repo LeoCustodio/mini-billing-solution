@@ -11,7 +11,7 @@ function CustomerForm({ onAddCustomer }) {
     setName('');
     const token = localStorage.getItem('Authorization');
     try {
-      await fetch('http://localhost:8002/customer/create', {
+      await fetch('http://localhost:8081/customer/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ function CustomerList() {
     const token = localStorage.getItem('Authorization');
 
     try {
-      await fetch('http://localhost:8002/customer/searchcustomers', {
+      await fetch('http://localhost:8081/customer/searchcustomers', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

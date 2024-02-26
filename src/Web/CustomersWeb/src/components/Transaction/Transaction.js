@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import './Transaction.css'; // Import your CSS file for styling
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function TransactionPage() {
   const [customerName, setcustomerName] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [receiptTransactions, setReceiptTransactions] = useState(false);
-  const [receipts, setReceipts] = useState(false);
   const [transactions, setTransaction] = useState(false);
+  const [file, setFile] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,7 +18,7 @@ function TransactionPage() {
     const token = localStorage.getItem('Authorization');
     
     try {
-      fetch(`http://localhost:8002/customer/gettransactions/${customerName}`, {
+      await fetch(`http://localhost:8081/customer/gettransactions/${customerName}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -27,25 +27,9 @@ function TransactionPage() {
       }).then(response => {
         if(response.ok){
           response.json().then(json => {
-            setTransaction(json.transactions);
-            setReceipts(json.receipts);
+            setTransaction(json);
 
-            json.transactions.forEach(tran => {
-              json.receipts.forEach(rec => {
-                if(rec.transactionId == tran.transactionId){
-                  const transactionReceipt = {
-                    transaction:tran,
-                    receipt:rec
-                  }
-                  console.log("transactionReceipt",transactionReceipt);
-                  setReceiptTransactions(transactionReceipt);
-                }
-              });
-            });
-            console.log("receiptTransactions",receiptTransactions);
-            console.log("Transactions",transactions);
-            console.log("receipt",receipts);
-
+            console.log('transactionsssss',json);
           })
         }
       });
@@ -85,14 +69,15 @@ function TransactionPage() {
                     <div className="items-list">
                         <h3>Transactions:</h3>
                         <ul>
-                            {receiptTransactions.forEach(item => (
-                                <li>
-                                    - Customer Name:{item.customerName}  
-                                    - Amount: ${parseFloat(item.amount.$numberDecimal)}  
-                                    - Receipt: <Link to="/ReceiptPage"  state={{...item}} >Link</Link>
-                                </li>
-                            ))}
-                        </ul>
+                        {transactions.map(item => (
+                            <li>
+                                - Customer Name:{item.customerName}
+                                - Balance: {item.balance}  
+                                - Amount: ${parseFloat(item.amount.$numberDecimal)} 
+                                - Receipt: <Link to="/ReceiptPage"   state={{...item}} >Link</Link>
+                            </li>
+                        ))}
+                    </ul>
                     </div>
                 </div>
             </div> : null

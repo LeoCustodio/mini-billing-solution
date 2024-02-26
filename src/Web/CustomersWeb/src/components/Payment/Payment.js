@@ -4,23 +4,28 @@ function MakeDeposit() {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
   
-  
     const handleSubmit = async (event) => {
+      const action = 'MAKE_TRANSACTION';
+
       event.preventDefault();
       setName('');
+      setAmount('');
+
       const token = localStorage.getItem('Authorization');
       try {
-        const response = await fetch('http://localhost:8002/customer/create', {
+          await fetch('http://localhost:8081/customer/makedeposit', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization' : token
           },
-          body: JSON.stringify( { name } ),
+          body: JSON.stringify( { name, amount, action } ),
         }).then(response => {
           if(response.ok){
             response.json().then(json => {
-              console.log(json);
+              if(!json){
+                return alert('Customer Not Found');
+              }
             })
           }
         });
@@ -44,7 +49,7 @@ function MakeDeposit() {
               type="text"
               placeholder="Amount"
               value={amount}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
               required
         />
         <button type="submit">Make Deposit</button>
@@ -56,23 +61,26 @@ function MakePayment() {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
   
-  
     const handleSubmit = async (event) => {
       event.preventDefault();
+      const action = 'MAKE_TRANSACTION';
       setName('');
+      setAmount('');
       const token = localStorage.getItem('Authorization');
       try {
-        const response = await fetch('http://localhost:8002/customer/create', {
+          await fetch('http://localhost:8081/customer/makepayment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization' : token
           },
-          body: JSON.stringify( { name } ),
+          body: JSON.stringify( { name, amount, action } ),
         }).then(response => {
           if(response.ok){
             response.json().then(json => {
-              console.log(json);
+              if(!json){
+                return alert('Customer Not Found');
+              }
             })
           }
         });
@@ -96,7 +104,7 @@ function MakePayment() {
               type="text"
               placeholder="Amount"
               value={amount}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
               required
         />
         <button type="submit">Make Deposit</button>
