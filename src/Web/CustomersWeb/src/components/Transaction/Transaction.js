@@ -18,7 +18,7 @@ function TransactionPage() {
     const token = localStorage.getItem('Authorization');
     
     try {
-      await fetch(`http://localhost:8081/customer/gettransactions/${customerName}`, {
+      await fetch(`http://localhost:8081/customer/gettransactions/:customerName=${customerName}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

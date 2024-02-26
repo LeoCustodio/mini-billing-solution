@@ -54,13 +54,12 @@ class CustomerService {
 
     async GetCustomerTransactions(customerName) {
         let transactionReceipt = [];
-        const transactions = await this.GetTransactionsByName(customerName);
 
+        const transactions = await this.GetTransactionsByName(customerName);
+        
         const receipts = await this.GetReceiptByName(customerName);
 
         const customer = await this.GetCustomerByName(customerName);
-
-        console.log('transactionstransactions',transactions);
 
         //Test receipt token
         if (receipts) {
