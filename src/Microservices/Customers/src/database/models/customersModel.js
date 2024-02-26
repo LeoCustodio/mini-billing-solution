@@ -7,7 +7,7 @@ const customersSchema = new mongoose.Schema({
         require: true
     },
     balance:{
-        type: Decimal128,
+        type: Number,
         require: true
     }
 })

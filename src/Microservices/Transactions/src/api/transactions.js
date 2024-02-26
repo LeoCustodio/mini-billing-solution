@@ -15,6 +15,7 @@ module.exports = (app,channel) => {
     app.get("/transaction/GetTransactionsByName/:customerName", async (req,res) => {
         try{
             const customerName = req.params.customerName;
+            console.log("req.paramsreq.params",req.params);
             const transactionResult = await service.GetTransactionsByName(customerName);
             if(transactionResult){
                 res.json(transactionResult);

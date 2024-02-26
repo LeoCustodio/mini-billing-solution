@@ -17,7 +17,7 @@ function LoginPage() {
     setError(null);
 
     try {
-      await fetch('http://localhost:8002/login', {
+      await fetch('http://localhost:8081/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

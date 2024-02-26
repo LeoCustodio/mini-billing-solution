@@ -1,48 +1,22 @@
-import React, { useState, Component } from 'react';
-import { useLocation } from "react-router";
+import React, { useState } from 'react';
+import { useLocation } from "react-router-dom";
 
-function ReceiptPage(props) {
-  const [customerName, setcustomerName] = useState('');
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [receipts, setReceipt] = useState(false);
-  const [transactions, setTransaction] = useState(false);
-  let data = useLocation();
-  console.log('DATA LOCATION TEST', data.state.transactionId);
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      const token = localStorage.getItem('Authorization');
-      await fetch(`http://localhost:8003/receipt/GetReceipGetReceiptByTransactionIdtById/${data.state.transactionId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
-        }
-      }).then(response => {
-        if(response.ok){
-          response.json().then(json => {
-            if(json.receipts !== false){
-            setReceipt(json.receipts);
-            console.log(json.receipts);
-            }
 
-          })
-        }
-      });
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+function ReceiptPage() {
+    let location = useLocation();
+    console.log('location storage', JSON.stringify(location.state.content));
+    let locationParse = '';
+    if(location.state.receiptValid){
+        locationParse = JSON.stringify(location.state.content);
     }
-  };
-
-  return (
-    <div>
-    </div>
-  );
+    else{
+        locationParse = "Receipt has expired"
+    }
+    return (
+        <div className="login-container">
+                {locationParse}
+        </div>
+    );
 }
 
 export default ReceiptPage;

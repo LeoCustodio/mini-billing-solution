@@ -4,7 +4,6 @@ class TransactionRepository {
 
     async CreateTransaction(message){
         try{
-            console.log(message);
             var transaction = new TransactionSchema({
                 customerName:message.customerName,
                 amount:message.amount,
@@ -20,8 +19,7 @@ class TransactionRepository {
     }
     async GetTransactionsByName(customerName){
 
-        const transactions =  TransactionSchema.find({ "customerName": customerName });
-
+        const transactions = await TransactionSchema.find({ "customerName": customerName });
         return transactions;
     }
 }
