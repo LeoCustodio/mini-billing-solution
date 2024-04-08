@@ -32,7 +32,7 @@ module.exports = (app, channel) => {
     })
 
     //Get all Customers
-    app.get("/customer/searchcustomers", verifyToken, async (req,res) => {
+    app.get("/customer/searchcustomers", async (req,res) => {
         try{
             const constumers = await service.GetCustomers();
             if(constumers){
