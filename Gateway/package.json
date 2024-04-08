@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "SET NODE_ENV=prod & nodemon src/index.js",
+    "dev": "SET NODE_ENV=dev & nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +15,14 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "express-http-proxy": "^2.0.0"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-http-proxy": "^2.0.0",
+    "express-session": "^1.18.0",
+    "helmet": "^7.1.0",
+    "http-proxy-middleware": "^2.0.6",
+    "jsonwebtoken": "^9.0.2",
+    "keycloak-connect": "^24.0.2",
+    "morgan": "^1.10.0"
   }
 }
