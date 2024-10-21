@@ -10,6 +10,8 @@ const Header = () => {
         <img src={Logo} alt="Logo" height="40" />
         <ul>
         <li><a href="/Login">Login</a></li>
+        <li><a href="/LoginGoogle">Login Google</a></li>
+
         </ul>
         </nav>
     </header>
