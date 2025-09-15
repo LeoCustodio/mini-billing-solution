@@ -1,6 +1,7 @@
 import './App.css';
 import CustomerPage from "./components/Customers/Customers";
 import Login from "./components/Login/Login";
+import LoginGoogle from "./components/Login/LoginGoogle"
 import PaymentPage from "./components/Payment/Payment";
 import Home from "./components/HomePage";
 import Layout from "./components/Layout"
@@ -15,13 +16,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/LoginGoogle" element={<LoginGoogle />} />
         <Route path="/CustomerPage" element={<CustomerPage />} />
         <Route path="/PaymentPage" element={<PaymentPage />} />
         <Route path="/TransactionPage" element={<TransactionPage />} />
         <Route path="/ReceiptPage" element={<ReceiptPage />} />
       </Routes>
       </Layout>
-
     </div>
   );
 }

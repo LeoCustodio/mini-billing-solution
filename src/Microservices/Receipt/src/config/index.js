@@ -11,7 +11,7 @@ else{
 
 module.exports = {
     rabbitMQ :{
-        url:process.env.RABBITMQ_URL_PROD,
+        url:process.env.RABBITMQ_URL,
         RECEIPT_EXCHANGENAME:'transaction_exchange',
         RECEIPT_QUEUENAME: 'receipt_queue',
         RECEIPT_BINDINGKEY: 'receipt_service'

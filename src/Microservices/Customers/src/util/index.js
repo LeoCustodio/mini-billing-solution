@@ -8,7 +8,7 @@ const {APP_SECRET} = require('../config');
 //create channel
 module.exports.CreateChannel = async () => {
     try{
-        const connection = await ampqlib.connect(config.rabbitMQ.rabbitMQ_url);
+        const connection = await ampqlib.connect(config.rabbitMQ.url);
         const channel = await connection.createChannel();
         await channel.assertExchange(config.rabbitMQ.tranexchangename,'direct', false);
         return channel;
