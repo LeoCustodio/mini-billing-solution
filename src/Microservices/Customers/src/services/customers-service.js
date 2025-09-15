@@ -18,6 +18,7 @@ class CustomerService {
             const token = CreateTokenReceipt();
 
             const customerResult = await this.CustomerBalance(message, paymentType);
+            
             if(customerResult){
                 const transaction = {
                     customerName: message.name,
@@ -35,7 +36,7 @@ class CustomerService {
                     token: token,
                     transactionId: id
                 };
-    
+                console.log('JSON.stringify(transaction)',JSON.stringify(transaction))
                 //send tranasction message
                 await PublishMessage(channel, rabbitMQ.tranbindingKey, JSON.stringify(transaction));
                 //send receipt message
@@ -86,8 +87,7 @@ class CustomerService {
                     transactionReceipt.push(payment);
                 }
             });
-        });
-        console.log("transactionReceipt", transactionReceipt);
+        });        
 
         return transactionReceipt;
     }
@@ -105,9 +105,8 @@ class CustomerService {
         const data = {
             customerName: customerName
         }
-        console.log(TRANSACTIONSERVICEURL);
+
         const url = `${TRANSACTIONSERVICEURL}/transaction/GetTransactionsByName/${customerName}`;
-        console.log(url);
         const res = MakeAxiosRequest(url, data);
         return res;
     }

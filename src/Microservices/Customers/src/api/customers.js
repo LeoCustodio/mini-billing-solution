@@ -36,7 +36,7 @@ module.exports = (app, channel) => {
         try{
             const constumers = await service.GetCustomers();
             if(constumers){
-                res.json(constumers);
+                res.status(200).json(constumers);
             }
             else{
                 res.sendStatus(404);
