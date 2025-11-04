@@ -25,7 +25,7 @@
 .app-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   background: var(--color-background);
   color: var(--color-text);
 }
@@ -82,7 +82,7 @@
 .app-shell__main {
   display: grid;
   grid-template-columns: minmax(220px, var(--sidebar-width)) minmax(0, 1fr);
-  align-items: stretch;
+  align-items: start;
   gap: var(--layout-gap);
   padding: var(--main-padding-block) var(--main-padding-inline);
   box-sizing: border-box;
@@ -100,8 +100,12 @@
   flex-direction: column;
   transition: padding var(--transition-duration) ease,
     box-shadow var(--transition-duration) ease;
-  height: 100%;
+  position: sticky;
+  top: var(--main-padding-block);
+  max-height: calc(100vh - (2 * var(--main-padding-block)));
   box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .app-sidebar__list {
