@@ -7,6 +7,7 @@ import Home from "./components/HomePage";
 import Layout from "./components/Layout"
 import TransactionPage from "./components/Transaction/Transaction"
 import ReceiptPage from "./components/Receipt/Receipt"
+import GetTokenPage from "./components/Token/GetToken"
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/PaymentPage" element={<PaymentPage />} />
         <Route path="/TransactionPage" element={<TransactionPage />} />
         <Route path="/ReceiptPage" element={<ReceiptPage />} />
+        <Route path="/GetTokenPage" element={<GetTokenPage />} />
       </Routes>
       </Layout>
     </div>

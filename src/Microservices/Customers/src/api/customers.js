@@ -1,11 +1,29 @@
 const CustomersService = require('../services/customers-service');
 const {verifyToken} = require('../middleware/authMiddleware');
 
+
 module.exports = (app, channel) => {
     const service = new CustomersService();
 
-    app.get('/', async (req, res) => {
+    app.post('/', async (req, res) => {
         res.send("Index Endpoint.");
+    })
+
+
+    //Create Token 
+    app.post("/customer/createtokenrequest", async (req,res) => {
+        try{
+            const token = await service.MakeSoapRequest(req.body);
+            // console.log(token);
+            if(req.body){
+                res.status(200).json(token);
+            }
+            else{
+                res.sendStatus(404);
+            }
+        }catch(err){
+            throw err;
+        }
     })
 
     //Make Deposit

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import './Transaction.css'; // Import your CSS file for styling
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 function TransactionPage() {
   const [customerName, setcustomerName] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [transactions, setTransaction] = useState(false);
-  const [file, setFile] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

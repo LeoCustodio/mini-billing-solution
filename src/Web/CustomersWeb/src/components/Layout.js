@@ -1,22 +1,23 @@
 import React from 'react';
 import Header from './Header';
 import Navigation from './Navigation';
-import './Layout.css'; // Import CSS file for styling
+import './Layout.css';
 
-const Layout = ({ children }) => {
-    return (
-        <React.Fragment>
-            <div>
-                <Header />
-                <div className="container">
-                <Navigation />
-                    <div className='children'>
-                    <main>{children}</main>
-                    </div>
-                    
-                </div>
-            </div>
-        </React.Fragment>
-    );
-};
-export default Layout;
+export default function Layout({ children }) {
+  return (
+    <div className="page">
+      <Header />
+      <div className="app-body">
+      <aside className="sidebar--left">
+        <Navigation />
+      </aside>
+      <div className="main">
+        <section className="content">
+          {children}
+        </section>
+      </div>
+    </div>
+      </div>
+
+  );
+}

@@ -1,21 +1,20 @@
 import React from 'react';
 import Logo from '../images/logo.svg';
-import './HomePage.css'; // Import CSS file for styling
+import './HomePage.css';
 
 const Header = () => {
-    return (
-    <header>
-        <nav className="navbar">
-        <h1>Mini-Billing Solution</h1>
-        <img src={Logo} alt="Logo" height="40" />
-        <ul>
+  return (
+    <header className="topbar">
+      <h1 className="topbar__title">Mini-Billing Solution</h1>
+
+      <img src={Logo} alt="Logo" height="40" />
+
+      <ul className="topbar__links">
         <li><a href="/Login">Login</a></li>
         <li><a href="/LoginGoogle">Login Google</a></li>
-
-        </ul>
-        </nav>
+      </ul>
     </header>
-
-    );
+  );
 };
+
 export default Header;

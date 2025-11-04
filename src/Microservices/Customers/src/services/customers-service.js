@@ -1,13 +1,36 @@
 const { CustomersRepository } = require('../database');
 const { PublishMessage, VerifyTokenReceipt, CreateTokenReceipt } = require('../util');
-const { MakeAxiosRequest } = require('../util/axios');
-const { rabbitMQ, RECEIPTSERVICEURL, TRANSACTIONSERVICEURL } = require('../config');
+const { MakeAxiosRequest, MakeAxiosTokenRequest } = require('../util/axios');
+const { rabbitMQ, RECEIPTSERVICEURL, TRANSACTIONSERVICEURL, HEARTLANDTOKENURL, HEARTLANDSERVICEURL } = require('../config');
+const axios = require('axios');
+const {buildXml, parseXML} = require('../util');
 
 //Business logic
 class CustomerService {
     constructor() {
         this.repository = new CustomersRepository();
     }
+
+    //SOAP request
+    async MakeSoapRequest(form) {
+        //SOAP envelope
+        const soapEnvelope = buildXml(form);
+        // console.log('soapEnvelope',soapEnvelope)
+        try {
+            const response = await axios.post(HEARTLANDSERVICEURL, soapEnvelope, {
+                headers: {
+                    'Content-Type': 'text/xml',
+                    'SOAPAction': HEARTLANDTOKENURL
+                },
+            });
+            const parseResult = parseXML(response.data);
+            const GUID = parseResult['s:Envelope']['s:Body'].LoadSecurePayDataExtendedResponse.LoadSecurePayDataExtendedResult['a:GUID']._text;
+            return GUID;
+        } catch (error) {
+            return 'Unable to connect to SOAP service';
+        }
+    } 
+
 
     async CreateTransactionAndReceipt(channel, message, paymentType) {
         try {
