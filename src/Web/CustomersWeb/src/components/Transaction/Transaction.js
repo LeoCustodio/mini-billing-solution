@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import './Transaction.css'; // Import your CSS file for styling
+import './Transaction.css';
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 function TransactionPage() {
   const [customerName, setcustomerName] = useState('');
@@ -41,46 +40,47 @@ function TransactionPage() {
   };
 
   return (
-      <div className="login-container">
-        <h2>Get Customer Transactions</h2>
-        <form onSubmit={handleSubmit}>
-            <input
-            type="text"
-            placeholder="Username"
-            value={customerName}
-            onChange={(e) => setcustomerName(e.target.value)}
-            required
-            />
-            {error && <div className="error">{error}</div>}
-            <button type="submit" disabled={loading}>
-            {loading ? 'Getting...' : 'Get Transactions'}
-            {}
-            </button>
-        </form>
+      <div className="transaction-page">
+        <section className="transaction-panel">
+          <h2 className="transaction-panel__title">Get Customer Transactions</h2>
+          <form className="transaction-form" onSubmit={handleSubmit}>
+              <input
+              type="text"
+              placeholder="Username"
+              value={customerName}
+              onChange={(e) => setcustomerName(e.target.value)}
+              required
+              />
+              {error && <div className="transaction-error">{error}</div>}
+              <button type="submit" disabled={loading}>
+              {loading ? 'Getting...' : 'Get Transactions'}
+              </button>
+          </form>
+        </section>
         {transactions ?
-            <div className="receipt-container">
-                <div className="receipt-header">
-                    <h1>Transactions</h1>
-                </div>
-                <div className="receipt-content">
-                    <div className="customer-info">
-                        <p><strong>Customer Name:</strong> {customerName}</p>
-                    </div>
-                    <div className="items-list">
-                        <h3>Transactions:</h3>
-                        <ul>
-                        {transactions.map(item => (
-                            <li>
-                                - Customer Name:{item.customerName}
-                                - Balance: {item.balance}  
-                                - Amount: ${parseFloat(item.amount.$numberDecimal)} 
-                                - Receipt: <Link to="/ReceiptPage"   state={{...item}} >Link</Link>
-                            </li>
-                        ))}
-                    </ul>
-                    </div>
-                </div>
-            </div> : null
+            <section className="transaction-results">
+                <header className="transaction-results__header">
+                    <h3>Transactions</h3>
+                    <p className="transaction-results__customer">
+                      <strong>Customer Name:</strong> {customerName}
+                    </p>
+                </header>
+                <ul className="transaction-results__list">
+                {transactions.map(item => (
+                    <li key={`${item.customerName}-${item.amount.$numberDecimal}-${item.balance}`} className="transaction-results__item">
+                        <span className="transaction-results__label">Customer:</span>
+                        <span className="transaction-results__value">{item.customerName}</span>
+                        <span className="transaction-results__label">Balance:</span>
+                        <span className="transaction-results__value">{item.balance}</span>
+                        <span className="transaction-results__label">Amount:</span>
+                        <span className="transaction-results__value">${parseFloat(item.amount.$numberDecimal)}</span>
+                        <Link className="transaction-results__link" to="/ReceiptPage" state={{ ...item }}>
+                          Receipt
+                        </Link>
+                    </li>
+                ))}
+                </ul>
+            </section> : null
         }
       </div>
   );

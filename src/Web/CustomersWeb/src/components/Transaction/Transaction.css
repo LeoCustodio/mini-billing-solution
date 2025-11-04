@@ -1,35 +1,139 @@
-.receipt-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
+.transaction-page {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(1.5rem, 1rem + 1vw, 2.75rem);
+  min-height: 0;
+}
+
+.transaction-panel,
+.transaction-results {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 1.25rem;
+  box-shadow: 0 18px 40px -24px rgba(37, 99, 235, 0.4);
+  padding: clamp(1.75rem, 1.3rem + 1vw, 2.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 0;
+}
+
+.transaction-panel__title {
+  margin: 0;
+  font-size: clamp(1.45rem, 1.2rem + 0.6vw, 1.95rem);
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.transaction-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.transaction-form input,
+.transaction-form button {
+  font: inherit;
+  padding: 0.8rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid #d4d8e3;
+  transition: border-color 200ms ease, box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+
+.transaction-form input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.transaction-form button {
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.transaction-form button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #4338ca 100%);
+}
+
+.transaction-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.transaction-error {
+  color: #b91c1c;
+  background: rgba(248, 113, 113, 0.15);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+}
+
+.transaction-results__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.transaction-results__header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+
+.transaction-results__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  overflow: auto;
+}
+
+.transaction-results__item {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, auto));
+  gap: 0.5rem 1rem;
+  background: rgba(37, 99, 235, 0.06);
+  border-radius: 0.9rem;
+  padding: 1rem 1.25rem;
+  align-items: center;
+}
+
+.transaction-results__label {
+  font-weight: 600;
+  color: #1d4ed8;
+}
+
+.transaction-results__value {
+  color: #0f172a;
+}
+
+.transaction-results__link {
+  justify-self: flex-start;
+  background: #2563eb;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.7rem;
+  font-weight: 600;
+  transition: background 200ms ease, transform 200ms ease;
+}
+
+.transaction-results__link:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .transaction-panel,
+  .transaction-results {
+    border-radius: 1rem;
   }
-  
-  .receipt-header {
-    text-align: center;
-    margin-bottom: 20px;
+
+  .transaction-results__item {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  
-  .receipt-content {
-    padding: 20px;
-  }
-  
-  .customer-info {
-    margin-bottom: 20px;
-  }
-  
-  .items-list ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .items-list li {
-    margin-bottom: 10px;
-  }
-  
-  .total {
-    text-align: right;
-  }
-  
+}

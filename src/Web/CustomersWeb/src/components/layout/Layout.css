@@ -11,18 +11,21 @@
   --header-gap: clamp(0.75rem, 0.6rem + 0.5vw, 1.5rem);
   --header-logo-size: clamp(40px, 36px + 1.5vw, 64px);
   --header-font-size: clamp(1.1rem, 1rem + 0.6vw, 1.75rem);
-  --sidebar-width: clamp(220px, 18vw, 320px);
+  --sidebar-width: clamp(220px, 20vw, 320px);
   --sidebar-padding-block: clamp(1.5rem, 1.2rem + 1vw, 2.5rem);
   --sidebar-padding-inline: clamp(1.25rem, 1rem + 0.8vw, 2rem);
   --content-padding: clamp(1.75rem, 1.5rem + 1vw, 3rem);
   --content-radius: clamp(1rem, 0.75rem + 1vw, 2rem);
+  --layout-gap: clamp(1.5rem, 1.2rem + 1vw, 3rem);
+  --main-padding-block: clamp(1.5rem, 1.2rem + 1vw, 3.5rem);
+  --main-padding-inline: clamp(1.25rem, 1rem + 1.5vw, 4rem);
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .app-shell {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   background: var(--color-background);
   color: var(--color-text);
 }
@@ -36,9 +39,6 @@
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
   box-shadow: 0 4px 6px -4px rgba(15, 23, 42, 0.15);
-  position: sticky;
-  top: 0;
-  z-index: 100;
   transition: padding var(--transition-duration) ease,
     gap var(--transition-duration) ease;
 }
@@ -78,30 +78,30 @@
   color: var(--color-primary);
 }
 
+
 .app-shell__main {
-  display: flex;
-  flex: 1 1 auto;
-  width: min(100%, 1300px);
-  margin: 0 auto;
-  padding: clamp(1.5rem, 1.2rem + 1vw, 3rem) clamp(1rem, 0.75rem + 1vw, 2.5rem)
-    clamp(2.5rem, 2rem + 1vw, 4rem);
-  gap: clamp(1.5rem, 1.2rem + 1vw, 3rem);
-  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(220px, var(--sidebar-width)) minmax(0, 1fr);
   align-items: stretch;
+  gap: var(--layout-gap);
+  padding: var(--main-padding-block) var(--main-padding-inline);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   min-height: 0;
 }
 
 .app-sidebar {
-  width: var(--sidebar-width);
   background: var(--color-surface);
   border-radius: clamp(1rem, 0.9rem + 0.6vw, 1.75rem);
   padding: var(--sidebar-padding-block) var(--sidebar-padding-inline);
   box-shadow: 0 10px 30px -12px rgba(37, 99, 235, 0.2);
-  align-self: stretch;
   display: flex;
   flex-direction: column;
-  transition: width var(--transition-duration) ease,
-    padding var(--transition-duration) ease;
+  transition: padding var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .app-sidebar__list {
@@ -143,7 +143,6 @@
 }
 
 .app-shell__content {
-  flex: 1 1 0;
   min-width: 0;
   background: var(--color-surface);
   border-radius: var(--content-radius);
@@ -153,11 +152,14 @@
   display: flex;
   flex-direction: column;
   gap: clamp(1.25rem, 1rem + 0.8vw, 2.5rem);
-  min-height: clamp(28rem, 55vh, 42rem);
+  height: 100%;
+  min-height: 0;
 }
 
 .app-shell__content > * {
   width: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 .app-shell__content > :first-child {
@@ -165,8 +167,8 @@
 }
 
 .app-shell__content form {
-  width: min(100%, 540px);
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   display: grid;
   gap: 1rem;
   align-content: start;
@@ -213,7 +215,6 @@
 }
 
 .app-footer {
-  margin-top: auto;
   background: var(--color-surface);
   border-top: 1px solid var(--color-border);
   padding: clamp(1rem, 0.85rem + 0.5vw, 1.75rem)
@@ -224,20 +225,19 @@
 }
 
 @media (max-width: 1024px) {
-  :root {
-    --sidebar-width: clamp(220px, 40vw, 280px);
-  }
-
   .app-shell__main {
-    flex-direction: column;
-    width: min(100%, 900px);
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    padding: var(--main-padding-block) clamp(1rem, 0.75rem + 2vw, 2rem);
   }
 
   .app-sidebar {
-    width: 100%;
     flex-direction: row;
-    padding: clamp(1rem, 0.85rem + 0.6vw, 1.5rem);
+    align-items: center;
+    justify-content: flex-start;
     overflow-x: auto;
+    padding: clamp(1rem, 0.85rem + 0.6vw, 1.5rem);
+    gap: clamp(0.5rem, 0.4rem + 0.4vw, 0.9rem);
   }
 
   .app-sidebar__list {
@@ -250,10 +250,6 @@
     flex: 1;
     text-align: center;
     white-space: nowrap;
-  }
-
-  .app-shell__content {
-    min-height: clamp(25rem, 60vh, 38rem);
   }
 }
 

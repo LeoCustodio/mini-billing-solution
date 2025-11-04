@@ -33,17 +33,19 @@ function CustomerForm({ onAddCustomer }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Add New Customer</h2>
-      <input
-        type="text"
-        placeholder="Customer Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <button type="submit">Add Customer</button>
-    </form>
+    <section className="customers-panel">
+      <form className="customers-form" onSubmit={handleSubmit}>
+        <h2 className="customers-panel__title">Add New Customer</h2>
+        <input
+          type="text"
+          placeholder="Customer Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <button type="submit">Add Customer</button>
+      </form>
+    </section>
   );
 }
 
@@ -74,9 +76,14 @@ function CustomerList() {
   }
 
   return (
-    <div>
-      <h2>Get All Customers</h2>
-      <TableContainer component={Paper}>
+    <section className="customers-panel customers-panel--list">
+      <div className="customers-panel__header">
+        <h2 className="customers-panel__title">Customers</h2>
+        <button type="button" onClick={handleClick}>
+          Get All Customers
+        </button>
+      </div>
+      <TableContainer component={Paper} className="customers-table__container">
         <Table>
           <TableHead>
             <TableRow>
@@ -92,8 +99,7 @@ function CustomerList() {
           </TableBody>
         </Table>
       </TableContainer>
-      <button onClick={(handleClick)}>Get All Customers</button>
-    </div>
+    </section>
   );
 }
 
@@ -105,9 +111,8 @@ function CustomerPage() {
   };
 
   return (
-    <div>
+    <div className="customers-page">
       <CustomerForm onAddCustomer={handleAddCustomer} />
-      <p></p>
       <CustomerList />
     </div>
   );
