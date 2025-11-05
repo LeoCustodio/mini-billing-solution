@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 const NAVIGATION_LINKS = [
   { to: '/CustomerPage', label: 'Customers' },
   { to: '/PaymentPage', label: 'Payment' },
+  { to: '/Token', label: 'Token' },
   { to: '/TransactionPage', label: 'Transactions' },
   { to: '/ReceiptPage', label: 'Receipts' },
 ];
