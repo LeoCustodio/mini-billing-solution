@@ -39,31 +39,32 @@ function LoginPage() {
   };
 
   return (
-        <div className="login-container">
-        <h2>Mini-Billing Login</h2>
-        <form onSubmit={handleSubmit}>
-            <input
+    <div className="login-page">
+      <div className="login-card">
+        <h2 className="login-card__title">Mini-Billing Login</h2>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            />
-            <input
+          />
+          <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            />
-            {error && <div className="error">{error}</div>}
-            <button type="submit" disabled={loading}>
+          />
+          {error && <div className="login-error">{error}</div>}
+          <button type="submit" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
-            {}
-            </button>
+          </button>
         </form>
-        {redirect === true ? (<Navigate to="/CustomerPage"/>) : null }
-        </div>
+        {redirect === true ? <Navigate to="/CustomerPage" /> : null}
+      </div>
+    </div>
   );
 }
 

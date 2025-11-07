@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Payment.css';
 
 function MakeDeposit() {
     const [name, setName] = useState('');
@@ -36,24 +37,26 @@ function MakeDeposit() {
     };
   
     return (
-      <form onSubmit={handleSubmit}>
-        <h2>Make Deposit</h2>
-        <input
-              type="text"
-              placeholder="Customer Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-        />
-        <input
-              type="text"
-              placeholder="Amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              required
-        />
-        <button type="submit">Make Deposit</button>
-      </form>
+      <section className="payment-card">
+        <form className="payment-form" onSubmit={handleSubmit}>
+          <h2 className="payment-card__title">Make Deposit</h2>
+          <input
+            type="text"
+            placeholder="Customer Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            required
+          />
+          <button type="submit">Make Deposit</button>
+        </form>
+      </section>
     );
 }
 
@@ -91,41 +94,39 @@ function MakePayment() {
     };
   
     return (
-      <form onSubmit={handleSubmit}>
-        <h2>Make Payment</h2>
-        <input
-              type="text"
-              placeholder="Customer Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-        />
-        <input
-              type="text"
-              placeholder="Amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              required
-        />
-        <button type="submit">Make Deposit</button>
-      </form>
+      <section className="payment-card">
+        <form className="payment-form" onSubmit={handleSubmit}>
+          <h2 className="payment-card__title">Make Payment</h2>
+          <input
+            type="text"
+            placeholder="Customer Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            required
+          />
+          <button type="submit">Make Payment</button>
+        </form>
+      </section>
     );
 }
 
 function PaymentPage() {
-    const [customers, setCustomers] = useState([]);
-  
-    const handleAddCustomer = (customer) => {
-      setCustomers([...customers, customer]);
-    };
-  
     return (
-      <div>
-        <MakeDeposit onAddCustomer={handleAddCustomer} />
-        <MakePayment onAddCustomer={handleAddCustomer} />
+      <div className="payment-page">
+        <div className="payment-grid">
+          <MakeDeposit />
+          <MakePayment />
+        </div>
       </div>
     );
   }
-  
+
   export default PaymentPage;
   
