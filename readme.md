@@ -48,3 +48,34 @@ To deploy the Mini-Billing-Solution, follow these steps:
         Receipt: https://mini-billing-receiptapi.rj.r.appspot.com/
         
         CustomersWeb: https://mini-billing-solution.uc.r.appspot.com/
+
+## Hacker News Best Stories API
+
+This repository also includes a small ASP.NET Core API that returns the top `n` best stories from the Hacker News API.
+
+### Running the API
+
+1. Ensure you have the .NET 8 SDK installed.
+2. From the repository root, run:
+
+    ```bash
+    cd src/HackerNewsApi
+    dotnet run
+    ```
+
+3. Query the API:
+
+    ```bash
+    curl "http://localhost:5000/api/beststories?n=10"
+    ```
+
+### Assumptions
+
+- The caller supplies the `n` query parameter, and it must be greater than zero.
+- Only items of type `story` are returned, mirroring the Hacker News item API contract.
+
+### Potential Enhancements
+
+- Add distributed caching (e.g., Redis) for multi-instance deployments.
+- Add resiliency policies (retry/backoff) for transient Hacker News API failures.
+- Add pagination/validation limits and OpenAPI/Swagger documentation.
